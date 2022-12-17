@@ -1,0 +1,36 @@
+#=== target directory ===
+target/
+
+#=== eclipse ===
+.settings/
+.project
+.classpath
+
+#=== netbeans ===
+#netbeans
+#nb*.xml
+
+#=== idea ===
+.idea/
+*.iml
+
+#===  package ===
+*.jar
+*.war
+*.ear
+
+#=== archive ===
+*.zip
+*.gz
+*.bz2
+*.7z
+
+#=== classes  ===
+*.class
+
+#=== temporary directory ===
+tmp/
+
+#=== out log directory ===
+out/
+
