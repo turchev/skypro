@@ -10,6 +10,7 @@
 
     <modules>
         <module>helloworld</module>
+        <module>loops</module>
     </modules>
 
     <name>hw</name>
