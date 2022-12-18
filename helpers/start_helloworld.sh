@@ -1,4 +1,4 @@
 #!/bin/bash
-# helloworld module startup
+cd ../../skypro
 mvn -pl helloworld clean
 mvn -pl helloworld compile exec:exec

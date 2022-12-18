@@ -1,5 +1,8 @@
 #!/bin/bash
-# assembly all
-mvn clean 
+
+cd ../../skypro
+
+mvn clean
 mvn -pl helloworld compile package
 mvn -pl pro.sky:hw package
+
