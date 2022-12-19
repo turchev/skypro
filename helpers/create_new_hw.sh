@@ -50,9 +50,9 @@ sed -i "s/mvn clean/mvn clean\nmvn -pl $HW_NEW_NAME compile package/" "$SCRIPT_D
 mvn -pl $HW_NEW_NAME compile exec:exec
 
 # 9
-git add $HW_NEW_NAME
+git add "$HW_NEW_NAME $POM_FILE $SCRIPT_DIR/$ASSEMBLY_ALL_SCRIPT"
 git commit -m "Initial $HW_NEW_NAME"
-git push origin master
+git push origin $HW_NEW_NAME
 read -p "Name of the working branch of the module (optional): " HW_NEW_BRANCH
 if [[ $HW_NEW_BRANCH == '' ]]; then
   echo "Work branch not created"
