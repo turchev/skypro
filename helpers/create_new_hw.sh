@@ -32,7 +32,7 @@ grep -rl $HW_OLD_NAME $HW_NEW_NAME | xargs -r sed -i "s/$HW_OLD_NAME/$HW_NEW_NAM
 find $HW_NEW_NAME -depth -name "*$HW_OLD_NAME*" | xargs -r $RENAME_CMD "s/$HW_OLD_NAME/$HW_NEW_NAME/"
 
 # 5
-sed -i "s/<modules>/<modules>\n\t\t<module>$HW_NEW_NAME<\/module>/" $POM_FILE
+sed -i "s/<modules>/<modules>\n\t<module>$HW_NEW_NAME<\/module>/" $POM_FILE
 
 # 6
 MODULE_START_SCRIPT="$SCRIPT_DIR/start_$HW_NEW_NAME.sh"
@@ -50,7 +50,7 @@ sed -i "s/mvn clean/mvn clean\nmvn -pl $HW_NEW_NAME compile package/" "$SCRIPT_D
 mvn -pl $HW_NEW_NAME compile exec:exec
 
 # 9
-git add "$HW_NEW_NAME $POM_FILE $SCRIPT_DIR/$ASSEMBLY_ALL_SCRIPT"
+git add $HW_NEW_NAME $POM_FILE $SCRIPT_DIR/$ASSEMBLY_ALL_SCRIPT
 git commit -m "Initial $HW_NEW_NAME"
 git push origin $HW_NEW_NAME
 read -p "Name of the working branch of the module (optional): " HW_NEW_BRANCH
