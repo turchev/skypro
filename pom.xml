@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
+	<module>objectmethods</module>
 	<module>methods</module>
 		<module>string</module>
 		<module>arrays</module>
