@@ -3,6 +3,7 @@
 cd ../../skypro
 
 mvn clean
+mvn -pl objectmethods compile package
 mvn -pl objectsandclasses compile package
 mvn -pl methods compile package
 mvn -pl string compile package
