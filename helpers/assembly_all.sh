@@ -3,6 +3,7 @@
 cd ../../skypro
 
 mvn clean
+mvn -pl coursework1 compile package
 mvn -pl objectmethods compile package
 mvn -pl objectsandclasses compile package
 mvn -pl methods compile package
