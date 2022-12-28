@@ -15,7 +15,7 @@
     <name>coursework1</name>
 
     <properties>
-        <project.classMain>pro.sky.coursework1.Main</project.classMain>
+        <project.classMain>pro.sky.coursework1.app.Main</project.classMain>
     </properties>
 
     <build>
