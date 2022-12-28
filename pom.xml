@@ -32,6 +32,8 @@
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
         <log4j.version>2.19.0</log4j.version>
         <log4j.configurationFile>log4j2.xml</log4j.configurationFile>
+        <lombok.version>1.18.24</lombok.version>
+        <jsr305.version>3.0.2</jsr305.version>
         <project.classMain></project.classMain>
         <project.build.sourceEncoding>${file.encoding}</project.build.sourceEncoding>
     </properties>
@@ -152,6 +154,17 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>${jsr305.version}</version>
         </dependency>
     </dependencies>
 
