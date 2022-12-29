@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>oop</module>
         <module>coursework1</module>
 	    <module>objectmethods</module>
         <module>objectsandclasses</module>
