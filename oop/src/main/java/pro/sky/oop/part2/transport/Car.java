@@ -3,19 +3,12 @@ package pro.sky.oop.part2.transport;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Car {
-    private static final String DEFAULT_CAR = "default";
+public class Car extends Transport {
+
     private static final float DEFAULT_ENGINE_VOLUME = 1.5f;
-    private static final String DEFAULT_COLOR = "белый";
-    private static final int DEFAULT_YEAR = 2000;
     private static final int DEFAULT_NUMBER_SEATS = 5;
 
-    private final String brand;
-    private final String model;
     private float engineVolume;
-    private String color;
-    private final int year;
-    private final String country;
     private String gearbox;
     private final String bodyType;
     private String licensePlate;
@@ -23,23 +16,16 @@ public class Car {
     private boolean winterTires;
     private Key key;
 
-
-    public Car(String brand, String model, float engineVolume, String color, int year, String country,
-               String gearbox, String bodyType, String licensePlate, int numberSeats) {
-        this(brand, model, engineVolume, color, year, country,
-                gearbox, bodyType, licensePlate, numberSeats, chooseTiresForSeason(LocalDate.now().getMonthValue()), null);
+    public Car(String brand, String model, int year, String country, String color, int maxSpeed, String bodyType, int numberSeats) {
+        this(brand, model, year, country, color, maxSpeed, bodyType, numberSeats, 0.0f, null, null,
+                chooseTiresForSeason(LocalDate.now().getMonthValue()), null);
     }
 
-    public Car(String brand, String model, float engineVolume, String color, int year, String country,
-               String gearbox, String bodyType, String licensePlate, int numberSeats, boolean winterTires, Key key) {
-        // 1
-        this.brand = brand == null || brand.isBlank() ? DEFAULT_CAR : brand;
-        this.model = model == null || model.isBlank() ? DEFAULT_CAR : model;
+    public Car(String brand, String model, int year, String country, String color, int maxSpeed, String bodyType, int numberSeats,
+               float engineVolume, String gearbox, String licensePlate,
+               boolean winterTires, Key key) {
+        super(brand, model, year, country, color, maxSpeed);
         this.engineVolume = engineVolume <= 0.0f ? DEFAULT_ENGINE_VOLUME : engineVolume;
-        this.color = color == null || color.isBlank() ? DEFAULT_COLOR : color;
-        this.year = year <= 0 ? DEFAULT_YEAR : year;
-        this.country = country == null || country.isBlank() ? DEFAULT_CAR : country;
-        // 2
         this.gearbox = gearbox == null || gearbox.isBlank() ? DEFAULT_CAR : gearbox;
         this.bodyType = bodyType == null || bodyType.isBlank() ? DEFAULT_CAR : bodyType;
         this.licensePlate = licensePlate == null || licensePlate.isBlank() ? DEFAULT_CAR : licensePlate;
@@ -48,36 +34,12 @@ public class Car {
         setKey(key);
     }
 
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
     public float getEngineVolume() {
         return engineVolume;
     }
 
     public void setEngineVolume(float engineVolume) {
         this.engineVolume = engineVolume;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public String getCountry() {
-        return country;
     }
 
     public String getGearbox() {
@@ -144,10 +106,9 @@ public class Car {
 
     @Override
     public String toString() {
-        return String.format("%s %s, цвет кузова - %s, объем двигателя - %.1f л., страна сборки - %s, год производства - %d, " +
-                        "коробка передач - %s, %n\tтип кузова - %s, регистрационный номер - %s, количество мест - %s, %s, %s",
-                getBrand(), getModel(), getColor(), getEngineVolume(), getCountry(), getYear(),
-                getGearbox(), getBodyType(), getLicensePlate(), getNumberSeats(),
+        return String.format("Автомобиль: %s, %n\tобъем двигателя - %.1f л., коробка передач - %s, тип кузова - %s, " +
+                        "регистрационный номер - %s, количество мест - %s, %s, %n\t%s",
+                super.toString(), getEngineVolume(), getGearbox(), getBodyType(), getLicensePlate(), getNumberSeats(),
                 (isWinterTires() ? "зимняя резина" : "летняя резина"), getKey());
     }
 
