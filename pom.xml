@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>listandqueue</module>
         <module>exceptions</module>
         <module>enums</module>
         <module>oop</module>
