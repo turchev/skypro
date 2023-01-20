@@ -3,6 +3,7 @@
 cd ../../skypro
 
 mvn clean
+mvn -pl hashset compile package
 mvn -pl listqueue compile package
 mvn -pl exceptions compile package
 mvn -pl enums compile package

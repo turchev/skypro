@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>hashset</module>
         <module>listqueue</module>
         <module>exceptions</module>
         <module>enums</module>
