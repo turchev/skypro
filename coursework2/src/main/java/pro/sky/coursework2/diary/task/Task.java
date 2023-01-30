@@ -3,6 +3,7 @@ package pro.sky.coursework2.diary.task;
 import lombok.Getter;
 import pro.sky.coursework2.diary.exception.IncorrectArgumentException;
 
+import javax.annotation.Nonnull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,30 +22,24 @@ public abstract class Task {
     @Getter
     private String description;
 
-    public Task(Type type, String title, String description, LocalDateTime localDateTime)
-            throws IncorrectArgumentException {
-        if (type == null) {
-            throw new IncorrectArgumentException("Требуется выбрать тип задачи", "type");
-        }
+    public Task(@Nonnull Type type, @Nonnull String title, @Nonnull String description,
+                @Nonnull LocalDateTime localDateTime) throws IncorrectArgumentException {
         this.type = type;
         setTitle(title);
         setDescription(description);
-        if (localDateTime == null) {
-            throw new IncorrectArgumentException("Требуется дата и время задачи", "dateTime");
-        }
         this.localDateTime = localDateTime;
         this.id = ++idGenerator;
     }
 
-    public void setTitle(String title) throws IncorrectArgumentException {
-        if (title == null || title.isBlank()) {
+    public void setTitle(@Nonnull String title) throws IncorrectArgumentException {
+        if (title.isBlank()) {
             throw new IncorrectArgumentException("Требуется ввести заголовок задачи", "title");
         }
         this.title = title;
     }
 
-    public void setDescription(String description) throws IncorrectArgumentException {
-        if (description == null || description.isBlank()) {
+    public void setDescription(@Nonnull String description) throws IncorrectArgumentException {
+        if (description.isBlank()) {
             throw new IncorrectArgumentException("Требуется описание задачи", "description");
         }
         this.description = description;

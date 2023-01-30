@@ -9,8 +9,10 @@ import pro.sky.coursework2.diary.task.*;
 import pro.sky.coursework2.diary.view.scanned.FrontEndService;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -49,11 +51,12 @@ public class FrontEnd {
 
     private boolean chooseActionAndContinue() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n\nВыберите действие: \n\t0 - Выйти\n\t1 - Добавить задачу" +
-                "\n\t2 - Получить задачи на день\n\t3 - Удалить задачу по id");
+        System.out.println("\n\nВыберите действие: \n\t0 - Выйти\n\t1 - Добавить задачу\n\t2 - Получить задачи на день" +
+                "\n\t3 - Удалить задачу по id\n\t4 - Получить список всех удаленных задач\n\t5 - Изменить заголовок задачи по id" +
+                "\n\t6 - Изменить описание задачи по id\n\t7 - Получать задачи, сгруппированные по датам (на 10 дней)");
         try {
             if (!sc.hasNextInt()) {
-                System.out.println("Выберите корректные значения от 0 до 4");
+                System.out.println("Выберите корректные значения от 0 до 7");
                 return true;
             }
             int flag = sc.nextInt();
@@ -69,8 +72,22 @@ public class FrontEnd {
                 case 3:
                     taskService.remove(frontEndService.inTaskId());
                     return true;
+                case 4:
+                    printTasks(taskService.getRemovedTasks());
+                    return true;
+                case 5:
+                    taskService.updateTitle(frontEndService.inTaskId(),
+                            frontEndService.inText("Новый заголовок:"));
+                    return true;
+                case 6:
+                    taskService.updateDescription(frontEndService.inTaskId(),
+                            frontEndService.inText("Новое описание:"));
+                    return true;
+                case 7:
+                    printTasks(taskService.getAllGroupeByDate());
+                    return true;
                 default:
-                    System.out.println("Выберите корректные значения от 0 до 4");
+                    System.out.println("Выберите корректные значения от 0 до 7");
                     return true;
             }
         } catch (Exception e) {
@@ -80,5 +97,18 @@ public class FrontEnd {
 
     private void printTasks(Collection<Task> tasks) {
         tasks.forEach(System.out::println);
+    }
+
+    private void printTasks(Map<LocalDate, Collection<Task>> taskMap) {
+        taskMap.forEach((localDate, tasks) -> {
+            if (tasks.isEmpty()) {
+                System.out.println("Нет задач на " + localDate);
+            } else {
+                System.out.println("Задачи на " + localDate);
+                tasks.forEach(task -> {
+                    System.out.println("\t" + task);
+                });
+            }
+        });
     }
 }

@@ -2,13 +2,14 @@ package pro.sky.coursework2.diary.view.scanned;
 
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nonnull;
 import java.util.Scanner;
 
 @Component(TextComponent.NAME)
 class TextComponent {
     static final String NAME = "scan_TextComponent";
 
-    protected String createText(String textType) {
+    protected String createText(@Nonnull String textType) {
         String text;
         do {
             text = scanTextFromStdin(textType);

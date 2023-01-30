@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.coursework2.diary.task.Task;
 
+import javax.annotation.Nonnull;
 import java.time.LocalDate;
 
 @Component(FrontEndService.NAME)
@@ -15,7 +16,8 @@ public class FrontEndComponent implements FrontEndService {
     private LocalDateTimeComponent localDateTimeComponent;
     @Autowired
     private IdComponent idComponent;
-
+    @Autowired
+    private TextComponent textComponent;
 
     @Override
     public Task buildTask() {
@@ -30,5 +32,10 @@ public class FrontEndComponent implements FrontEndService {
     @Override
     public int inTaskId() {
         return idComponent.createId();
+    }
+
+    @Override
+    public String inText(@Nonnull String textType) {
+        return textComponent.createText(textType);
     }
 }
