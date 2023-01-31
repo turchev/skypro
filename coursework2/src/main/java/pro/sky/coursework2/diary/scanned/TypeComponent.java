@@ -1,4 +1,4 @@
-package pro.sky.coursework2.diary.view.scanned;
+package pro.sky.coursework2.diary.scanned;
 
 import org.springframework.stereotype.Component;
 import pro.sky.coursework2.diary.task.Type;

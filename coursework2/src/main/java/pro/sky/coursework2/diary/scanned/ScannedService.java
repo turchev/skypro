@@ -1,11 +1,11 @@
-package pro.sky.coursework2.diary.view.scanned;
+package pro.sky.coursework2.diary.scanned;
 
 import pro.sky.coursework2.diary.task.Task;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDate;
 
-public interface FrontEndService {
+public interface ScannedService {
     String NAME = "diary_FrontEndService";
 
     /**

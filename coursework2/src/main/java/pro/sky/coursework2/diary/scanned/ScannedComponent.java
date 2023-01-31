@@ -1,4 +1,4 @@
-package pro.sky.coursework2.diary.view.scanned;
+package pro.sky.coursework2.diary.scanned;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -7,8 +7,8 @@ import pro.sky.coursework2.diary.task.Task;
 import javax.annotation.Nonnull;
 import java.time.LocalDate;
 
-@Component(FrontEndService.NAME)
-public class FrontEndComponent implements FrontEndService {
+@Component(ScannedService.NAME)
+public class ScannedComponent implements ScannedService {
 
     @Autowired
     private TaskBuilderComponent taskBuilderComponent;

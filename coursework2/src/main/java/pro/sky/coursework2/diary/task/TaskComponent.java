@@ -1,9 +1,8 @@
-package pro.sky.coursework2.diary.service;
+package pro.sky.coursework2.diary.task;
 
 import org.springframework.stereotype.Service;
 import pro.sky.coursework2.diary.exception.IncorrectArgumentException;
 import pro.sky.coursework2.diary.exception.TaskNotFoundException;
-import pro.sky.coursework2.diary.task.Task;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,7 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service(TaskService.NAME)
-public class TaskServiceImpl implements TaskService {
+class TaskComponent implements TaskService {
     private static final int DAYS_TO_ADD = 10;
     private final Map<Integer, Task> taskMap = new HashMap<>();
     private final Collection<Task> removedTasks = new ArrayList<>();

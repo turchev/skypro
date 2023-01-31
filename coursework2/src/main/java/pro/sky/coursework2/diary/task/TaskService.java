@@ -1,8 +1,7 @@
-package pro.sky.coursework2.diary.service;
+package pro.sky.coursework2.diary.task;
 
 import pro.sky.coursework2.diary.exception.IncorrectArgumentException;
 import pro.sky.coursework2.diary.exception.TaskNotFoundException;
-import pro.sky.coursework2.diary.task.Task;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDate;

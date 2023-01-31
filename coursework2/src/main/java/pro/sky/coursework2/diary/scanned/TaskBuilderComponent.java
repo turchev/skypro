@@ -1,4 +1,4 @@
-package pro.sky.coursework2.diary.view.scanned;
+package pro.sky.coursework2.diary.scanned;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
