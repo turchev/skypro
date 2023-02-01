@@ -3,6 +3,7 @@
 cd ../../skypro
 
 mvn clean
+mvn -pl httprest compile package
 mvn -pl coursework2 compile package
 mvn -pl hashmap compile package
 mvn -pl hashset compile package

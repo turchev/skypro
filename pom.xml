@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>httprest</module>
         <module>coursework2</module>
         <module>hashmap</module>
         <module>hashset</module>
