@@ -1,2 +1,1 @@
-Independent work on the course "Sprint Java" in the SkyPro.
-
+The second part of independent work on the course "Java Sprint" in SkyPro using Spring

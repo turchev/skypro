@@ -1,36 +1,48 @@
-#=== target directory ===
 target/
+.mvn/
+mvnw
+mvnw.cmd
 
-#=== eclipse ===
-.settings/
-.project
-.classpath
-
-#=== netbeans ===
-#netbeans
-#nb*.xml
-
-#=== idea ===
-.idea/
-*.iml
-
-#===  package ===
+# Package Files #
 *.jar
 *.war
+*.nar
 *.ear
-
-#=== archive ===
 *.zip
+*.tar.gz
+*.rar
 *.gz
 *.bz2
 *.7z
 
-#=== classes  ===
-*.class
+# STS #
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-#=== temporary directory ===
-tmp/
+# IntelliJ IDEA #
+.idea
+*.iws
+*.iml
+*.ipr
 
-#=== out log directory ===
-out/
+#=== eclipse ===
+.settings/
+
+# NetBeans #
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# VS Code #
+.vscode/
 
