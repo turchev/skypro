@@ -1,4 +1,4 @@
-package pro.sky.recipesite;
+package pro.sky.recipesite.controllers;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
