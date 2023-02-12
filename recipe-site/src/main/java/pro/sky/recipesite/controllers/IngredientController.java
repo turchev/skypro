@@ -4,23 +4,38 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.recipesite.model.Ingredient;
-import pro.sky.recipesite.service.RepositoryService;
+import pro.sky.recipesite.repository.IngredientRepository;
 
-import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ingredient")
 @RequiredArgsConstructor
 public class IngredientController {
-    private final RepositoryService<Ingredient> repositoryService;
+    private final IngredientRepository ingredientRepository;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ingredient> totalShipped(@PathVariable("id") long ingredientId) {
-        return ResponseEntity.of(repositoryService.findById(ingredientId));
+    public ResponseEntity<Ingredient> findById(@PathVariable("id") long ingredientId) {
+        return ResponseEntity.of(ingredientRepository.findById(ingredientId));
     }
 
     @PostMapping
-    public ResponseEntity<Ingredient> save(@Valid @RequestBody Ingredient ingredient) {
-        return ResponseEntity.ok(repositoryService.save(ingredient));
+    public ResponseEntity<Ingredient> save(@RequestBody Ingredient ingredient) {
+        return ResponseEntity.ok(ingredientRepository.save(ingredient));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Ingredient> update(@RequestBody Ingredient ingredient) {
+        return ResponseEntity.ok(ingredientRepository.update(ingredient));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Ingredient> delete(@RequestBody Ingredient ingredient) {
+        return ResponseEntity.ok(ingredientRepository.delete(ingredient));
+    }
+
+    @GetMapping
+    public ResponseEntity<Map<Long, Ingredient>> findAll() {
+        return ResponseEntity.ok(ingredientRepository.findAll());
     }
 }

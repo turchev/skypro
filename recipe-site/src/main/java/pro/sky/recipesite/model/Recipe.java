@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -28,9 +27,11 @@ public class Recipe extends AbstractEntity {
         super(++currentId, name);
     }
 
-    public Recipe(@NotBlank String name, @Positive int cookingTime, @Positive int portion) {
+    public Recipe(String name, int cookingTime, int portion, List<Ingredient> ingredients, List<String> steps) {
         this(name);
         this.cookingTime = cookingTime;
         this.portion = portion;
+        this.ingredients = ingredients;
+        this.steps = steps;
     }
 }
