@@ -1,7 +1,7 @@
 package pro.sky.recipesite.model;
 
 import lombok.Getter;
-import lombok.Setter;
+import org.apache.commons.lang3.Validate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -13,12 +13,11 @@ public abstract class AbstractEntity {
     @Positive
     protected final long id;
 
-    @Setter
     @NotBlank
     protected String name;
 
     protected AbstractEntity(Long id, String name) {
-        this.name = name;
+        setName(name);
         this.id = id;
     }
 
@@ -32,5 +31,10 @@ public abstract class AbstractEntity {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName());
+    }
+
+    public void setName(String name) {
+        Validate.notBlank(name, "Название обязательный параметр");
+        this.name = name;
     }
 }
