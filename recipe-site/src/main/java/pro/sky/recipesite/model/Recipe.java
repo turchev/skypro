@@ -1,5 +1,6 @@
 package pro.sky.recipesite.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +11,8 @@ import java.util.List;
 
 @Setter
 @Getter
+@EqualsAndHashCode(callSuper = true)
 public class Recipe extends AbstractEntity {
-    private static long currentId;
 
     @Positive
     private int cookingTime;
@@ -22,12 +23,8 @@ public class Recipe extends AbstractEntity {
     @NotEmpty
     private List<String> steps;
 
-    private Recipe(String name) {
-        super(++currentId, name);
-    }
-
     public Recipe(String name, int cookingTime, int portion, List<Ingredient> ingredients, List<String> steps) {
-        this(name);
+        setName(name);
         setCookingTime(cookingTime);
         setPortion(portion);
         setIngredients(ingredients);
