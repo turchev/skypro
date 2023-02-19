@@ -1,16 +1,21 @@
 package pro.sky.recipesite.repository.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import pro.sky.recipesite.configuration.FilesProperties;
 import pro.sky.recipesite.exeption.EntityDuplicateException;
 import pro.sky.recipesite.exeption.EntityNotFoundException;
 import pro.sky.recipesite.model.Ingredient;
 import pro.sky.recipesite.model.Recipe;
 import pro.sky.recipesite.repository.IngredientRepository;
 import pro.sky.recipesite.repository.RecipeRepository;
+import pro.sky.recipesite.service.FileService;
 
+import javax.annotation.PostConstruct;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,6 +26,17 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     private static long currentId;
     private final IngredientRepository ingredientRepository;
     private final Map<Long, Recipe> recipeStorage = new HashMap<>();
+    private final FilesProperties filesProperties;
+    private final FileService fileService;
+
+    private Path recipeFilePath;
+
+    @PostConstruct
+    private void init() {
+        recipeFilePath = Path.of(filesProperties.filesDir(), filesProperties.recipeFileName());
+        recipeStorage.putAll(fileService.readFromFile(recipeFilePath, new TypeReference<>() {
+        }));
+    }
 
     @Override
     @Nullable
@@ -35,7 +51,9 @@ public class RecipeRepositoryImpl implements RecipeRepository {
                 log.debug(e.getMessage());
             }
         });
-        return recipeStorage.put(++currentId, recipe);
+        Recipe prevRecipe = recipeStorage.put(++currentId, recipe);
+        saveRecipiesToFile();
+        return prevRecipe;
     }
 
     @Override
@@ -50,6 +68,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         if (updatedRecipe == null) {
             throw new EntityNotFoundException("Не найден рецепт с id: " + id);
         }
+        saveRecipiesToFile();
         return updatedRecipe;
     }
 
@@ -60,6 +79,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         if (deletedRecipe == null) {
             throw new EntityNotFoundException("Не найден рецепт с id: " + id);
         }
+        saveRecipiesToFile();
         return deletedRecipe;
     }
 
@@ -88,5 +108,9 @@ public class RecipeRepositoryImpl implements RecipeRepository {
                     + Arrays.toString(ingredientId));
         }
         return foundRecipes;
+    }
+
+    private void saveRecipiesToFile() {
+        fileService.saveToFile(recipeStorage, recipeFilePath);
     }
 }
