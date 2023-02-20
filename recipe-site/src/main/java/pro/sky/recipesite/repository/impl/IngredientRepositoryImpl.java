@@ -34,7 +34,7 @@ public class IngredientRepositoryImpl implements IngredientRepository {
     @PostConstruct
     private void init() {
         ingredientFilePath = Path.of(filesProperties.filesDir(), filesProperties.ingredientFileName());
-        ingredientStorage.putAll(fileService.readFromFile(ingredientFilePath, new TypeReference<>() {
+        ingredientStorage.putAll(fileService.readEntitiesFromFile(ingredientFilePath, new TypeReference<>() {
         }));
     }
 
@@ -85,6 +85,6 @@ public class IngredientRepositoryImpl implements IngredientRepository {
     }
 
     private void saveIngredientsToFile() {
-        fileService.saveToFile(ingredientStorage, ingredientFilePath);
+        fileService.saveEntitiesToFile(ingredientStorage, ingredientFilePath);
     }
 }

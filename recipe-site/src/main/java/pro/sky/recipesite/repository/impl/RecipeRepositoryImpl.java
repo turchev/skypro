@@ -34,7 +34,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     @PostConstruct
     private void init() {
         recipeFilePath = Path.of(filesProperties.filesDir(), filesProperties.recipeFileName());
-        recipeStorage.putAll(fileService.readFromFile(recipeFilePath, new TypeReference<>() {
+        recipeStorage.putAll(fileService.readEntitiesFromFile(recipeFilePath, new TypeReference<>() {
         }));
     }
 
@@ -111,6 +111,6 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     private void saveRecipiesToFile() {
-        fileService.saveToFile(recipeStorage, recipeFilePath);
+        fileService.saveEntitiesToFile(recipeStorage, recipeFilePath);
     }
 }
