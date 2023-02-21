@@ -44,4 +44,14 @@ public interface FileService {
      * @throws FileWriteException если не удалось создать файл или удалить существующий
      */
     File createFile(@NotNull String pathFile) throws FileWriteException;
+
+    /**
+     * Сохраняет контент строкового формата в файл по указанному пути, если файл уже существует, то заменяет на новый
+     *
+     * @param content контент строкового формата
+     * @param path путь файла
+     * @return объект {@link Path}
+     * @throws FileWriteException если не удалось сохранить файл или перезаписать существующий
+     */
+    Path saveToFile(@NotNull String content, @NotNull Path path) throws FileWriteException;
 }

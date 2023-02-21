@@ -27,9 +27,8 @@ public class FileServiceImpl implements FileService {
     @Override
     public <T extends AbstractEntity> void saveEntitiesToFile(@NotNull Map<Long, T> entityMap, @NotNull Path path) {
         try {
-            cleanFile(path);
             String json = objectMapper.writeValueAsString(entityMap);
-            Files.writeString(path, json);
+            saveToFile(json, path);
         } catch (IOException | RuntimeException e) {
             e.printStackTrace();
         }
@@ -73,6 +72,16 @@ public class FileServiceImpl implements FileService {
             cleanFile(path);
             return path.toFile();
         } catch (IOException e) {
+            throw new FileWriteException("Ошибка создания файла");
+        }
+    }
+
+    @Override
+    public Path saveToFile(@NotNull String content, @NotNull Path path) throws FileWriteException {
+        try {
+            cleanFile(path);
+            return Files.writeString(path, content);
+        } catch (Exception e) {
             throw new FileWriteException("Ошибка создания файла");
         }
     }

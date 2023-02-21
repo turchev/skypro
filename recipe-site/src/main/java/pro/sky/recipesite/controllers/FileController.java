@@ -18,11 +18,14 @@ import org.springframework.web.server.ResponseStatusException;
 import pro.sky.recipesite.configuration.FilesProperties;
 import pro.sky.recipesite.exeption.FileReadException;
 import pro.sky.recipesite.exeption.FileWriteException;
+import pro.sky.recipesite.repository.RecipeRepository;
 import pro.sky.recipesite.service.FileService;
+import pro.sky.recipesite.service.RecipeReportService;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Path;
 
 
 @Validated
@@ -33,19 +36,31 @@ import java.io.FileOutputStream;
 public class FileController {
     private final FilesProperties filesProperties;
     private final FileService fileService;
+    private final RecipeReportService recipeReportService;
+    private final RecipeRepository recipeRepository;
 
-
-    @Operation(summary = "Выгрузка файла рецептов")
+    @Operation(
+            summary = "Выгрузка файла рецептов",
+            description = "По умолчанию выгрузка осуществляется в формате json. " +
+                    "Если указать явно параметр markdown=true, то выгрузка будет осуществлена в виде отчета в формате markdown")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Файл доступен для загрузки"),
             @ApiResponse(responseCode = "400", description = "Не корректный запрос"),
             @ApiResponse(responseCode = "404", description = "Файл недоступен для чтения или не существует по указанному пути"),
             @ApiResponse(responseCode = "500", description = "Непредвиденная ошибка при чтении файла")})
     @GetMapping("/recipe/download")
-    public ResponseEntity<InputStreamResource> downloadRecipeFile() {
+    public ResponseEntity<InputStreamResource> downloadRecipeFile(
+            @RequestParam(name = "markdown", required = false, defaultValue = "false") Boolean markdown) {
         try {
-            File file = fileService.readFile(filesProperties.filesDir() + "/" + filesProperties.recipeFileName());
-            InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
+            String filePath;
+            if (markdown) {
+                filePath = filesProperties.filesDir() + "/" + filesProperties.recipeMarkdownFileName();
+                fileService.saveToFile(recipeReportService.createReportInMarkdown(recipeRepository.findAll()), Path.of(filePath));
+            } else {
+                filePath = filesProperties.filesDir() + "/" + filesProperties.recipeFileName();
+            }
+            File file = fileService.readFile(filePath);
+            InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(filePath));
             return ResponseEntity.ok()
                     .contentLength(file.length())
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)

@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 public record FilesProperties(
         String filesDir,
         String recipeFileName,
-        String ingredientFileName
+        String ingredientFileName,
+        String recipeMarkdownFileName
 ) {
 }
