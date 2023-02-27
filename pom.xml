@@ -20,6 +20,7 @@
 
     <modules>
         <module>recipe-site</module>
+        <module>socks-bazaar</module>
     </modules>
 
     <properties>

@@ -1,0 +1,18 @@
+[
+  {
+    "socks": {
+      "colorType": "RED",
+      "sizeType": "S36",
+      "cottonPart": 100
+    },
+    "quantity": 6
+  },
+  {
+    "socks": {
+      "colorType": "WHITE",
+      "sizeType": "S38",
+      "cottonPart": 80
+    },
+    "quantity": 8
+  }
+]
