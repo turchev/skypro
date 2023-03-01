@@ -21,14 +21,18 @@
     <modules>
         <module>recipe-site</module>
         <module>socks-bazaar</module>
+        <module>stream_api</module>
     </modules>
 
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <lombok.version>1.18.26</lombok.version>
         <springdoc-openapi-ui.version>1.6.14</springdoc-openapi-ui.version>
         <commons-io.version>2.11.0</commons-io.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
