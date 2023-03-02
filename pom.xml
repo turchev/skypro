@@ -22,6 +22,7 @@
         <module>recipe-site</module>
         <module>socks-bazaar</module>
         <module>stream_api</module>
+        <module>junit</module>
     </modules>
 
     <properties>
