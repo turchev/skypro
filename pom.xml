@@ -23,6 +23,7 @@
         <module>socks-bazaar</module>
         <module>stream_api</module>
         <module>junit</module>
+        <module>mockito</module>
     </modules>
 
     <properties>
