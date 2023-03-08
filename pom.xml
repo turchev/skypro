@@ -24,6 +24,7 @@
         <module>stream_api</module>
         <module>junit</module>
         <module>mockito</module>
+        <module>sql-basics</module>
     </modules>
 
     <properties>
