@@ -60,3 +60,70 @@
 2. Получите города, а также имена и фамилии сотрудников, которые в них проживают. Если в городе никто из сотрудников не живет, то вместо имени должен стоять null.
 3. Получите имена всех сотрудников и названия всех городов. Если в городе не живет никто из сотрудников, то вместо имени должен стоять null. Аналогично, если города для какого-то из сотрудников нет в списке, так же должен быть получен null.
 4. Получите таблицу, в которой каждому имени должен соответствовать каждый город.
+
+
+# JDBC
+
+### Задание 1
+
+1. Создать maven проект с архетипом org.apache.maven.archetypes:maven-archetype-webapp.
+2. Добавить зависимость postgresql с сайта [https://mvnrepository.com/](https://mvnrepository.com/) и плагин maven-compiler-plugin в pom.xml файл (пример файла pom.xml ниже).
+3. Создать класс Application и настроить в нем подключение к созданной ранее базе данных skypro.
+4. Получить и вывести в консоль полные данные об одном из работников (имя, фамилия, пол, город) данные получить по id.
+- Файл pom.xml (для примера)
+
+
+    ```java
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+      <modelVersion>4.0.0</modelVersion>
+      <groupId>org.example</groupId>
+      <artifactId>Course3_JDBC</artifactId>
+      <packaging>war</packaging>
+      <version>1.0-SNAPSHOT</version>
+      <name>Course3_JDBC Maven Webapp</name>
+      <url>http://maven.apache.org</url>
+      <dependencies>
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>3.8.1</version>
+          <scope>test</scope>
+        </dependency>
+    
+        <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>42.5.1</version>
+        </dependency>
+    
+      </dependencies>
+      <build>
+        <finalName>Course3_JDBC</finalName>
+          <plugins>
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <configuration>
+                      <source>11</source>
+                      <target>11</target>
+                  </configuration>
+              </plugin>
+          </plugins>
+      </build>
+    </project>
+    ```
+
+
+### **Задание 2**
+
+1. Создать классы Employee и City с полями, аналогично созданным таблицам.
+2. Создать интерфейс EmployeeDAO.
+3. Создать в интерфейсе методы:
+    1. Создание(добавление) сущности Employee в таблицу
+    2. Получение конкретного объекта Employee по id
+    3. Получение списка всех объектов Employee из базы
+    4. Изменение конкретного объекта Employee в базе по id
+    5. Удаление конкретного объекта Employee из базы по id
+4. Реализовать сервис EmployeeDAO и каждый его метод в отдельном классе.
+5. Проверить корректность работы всех методов в классе Application.
