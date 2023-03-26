@@ -1,118 +1,81 @@
 package pro.sky.jdbc.dao;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
-import pro.sky.jdbc.exception.ConnectionException;
+import pro.sky.jdbc.entity.Employee;
 import pro.sky.jdbc.exception.DaoException;
-import pro.sky.jdbc.model.City;
-import pro.sky.jdbc.model.Employee;
-import pro.sky.jdbc.service.DbConnectionService;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class EmployeeDaoImpl implements EmployeeDao {
 
-    private final DbConnectionService dbConnectionService;
+    private final SessionFactory sessionFactory;
 
     @Override
-    public int create(Employee employee) {
-        final String query = "INSERT INTO employee (first_name, last_name, age, gender, city_id) " +
-                "VALUES ((?), (?), (?), (?), (?))";
-        try (PreparedStatement statement = dbConnectionService.getConnection().prepareStatement(query)) {
-            statement.setString(1, employee.getFirstName());
-            statement.setString(2, employee.getLastName());
-            statement.setInt(3, employee.getAge());
-            statement.setString(4, employee.getGender());
-            if (employee.getCity() == null) {
-                statement.setNull(5, java.sql.Types.BIGINT);
-            } else {
-                statement.setLong(5, employee.getCity().getCityId());
+    public void create(Employee employee) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.save(employee);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-            return statement.executeUpdate();
-        } catch (SQLException | ConnectionException e) {
-            throw new DaoException("Ошибка при добавлении данных: " + e.getMessage());
+            throw new DaoException("Не удалось сохранить сущность в базу данных: " + e.getMessage());
         }
     }
 
     @Override
-    public Employee findById(long id) {
-        final String query = "SELECT * FROM employee e " +
-                "INNER JOIN city c ON e.city_id = c.city_id WHERE id = (?)";
-        try (PreparedStatement statement = dbConnectionService.getConnection().prepareStatement(query)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            Employee employee = null;
-            while (resultSet.next()) {
-                employee = new Employee();
-                employee.setId(resultSet.getLong("id"));
-                employee.setFirstName(resultSet.getString("first_name"));
-                employee.setLastName(resultSet.getString("last_name"));
-                employee.setGender(resultSet.getString("gender"));
-                employee.setAge(resultSet.getInt("age"));
-                employee.setCity(new City(resultSet.getInt("city_id"),
-                        resultSet.getString("city_name")));
-            }
-            return employee;
-        } catch (SQLException | ConnectionException e) {
-            throw new DaoException("Ошибка при поиске сущности по id: " + e.getMessage());
+    public Employee findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Employee.class, id);
+        } catch (Exception e) {
+            throw new DaoException("Ошибка при поиске в базе данных: " + e.getMessage());
         }
     }
 
     @Override
     public List<Employee> findAll() {
-        final String query = "SELECT * FROM employee e INNER JOIN city c ON e.city_id = c.city_id";
-        try (PreparedStatement statement = dbConnectionService.getConnection().prepareStatement(query)) {
-            ResultSet resultSet = statement.executeQuery();
-            List<Employee> employees = new ArrayList<>();
-            while (resultSet.next()) {
-                Employee employee = new Employee();
-                employee.setId(resultSet.getLong("id"));
-                employee.setFirstName(resultSet.getString("first_name"));
-                employee.setLastName(resultSet.getString("last_name"));
-                employee.setGender(resultSet.getString("gender"));
-                employee.setAge(resultSet.getInt("age"));
-                employee.setCity(new City(resultSet.getInt("city_id"),
-                        resultSet.getString("city_name")));
-                employees.add(employee);
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Employee").list();
+        } catch (Exception e) {
+            throw new DaoException("Ошибка при поиске в базе данных: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void update(Employee employee) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.update(employee);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-            return employees;
-        } catch (SQLException | ConnectionException e) {
-            throw new DaoException("Ошибка чтении всех записей: " + e.getMessage());
+            throw new DaoException("Не удалось изменить сущность в базе данных: " + e.getMessage());
         }
     }
 
     @Override
-    public void update(Employee employee, long id) {
-        final String query = "UPDATE employee " +
-                "SET first_name=(?), last_name=(?), age=(?), gender=(?), city_id=(?) " +
-                "WHERE id=(?)";
-        try (PreparedStatement statement = dbConnectionService.getConnection().prepareStatement(query)) {
-            statement.setString(1, employee.getFirstName());
-            statement.setString(2, employee.getLastName());
-            statement.setInt(3, employee.getAge());
-            statement.setString(4, employee.getGender());
-            statement.setLong(5, employee.getCity().getCityId());
-            statement.setLong(6, id);
-            statement.executeUpdate();
-        } catch (SQLException | ConnectionException e) {
-            throw new DaoException("Ошибка при изменении данных: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void delete(long id) {
-        final String query = "DELETE FROM employee WHERE id=(?)";
-        try (PreparedStatement statement = dbConnectionService.getConnection().prepareStatement(query)) {
-            statement.setLong(1, id);
-            statement.executeUpdate();
-        } catch (SQLException | ConnectionException e) {
-            throw new DaoException("Ошибка при удалении данных: " + e.getMessage());
+    public void delete(Employee employee) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.delete(employee);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DaoException("Не удалось удалить сущность из базы данных: " + e.getMessage());
         }
     }
 }

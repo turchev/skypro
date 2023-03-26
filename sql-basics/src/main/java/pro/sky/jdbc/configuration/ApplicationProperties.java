@@ -5,5 +5,10 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
 @ConfigurationProperties(prefix = "jdbc")
-public record FilesProperties(String user, String password, String url) {
+public record ApplicationProperties(
+        String user,
+        String password,
+        String url,
+        String driverClassName,
+        String entityPackages) {
 }
