@@ -1,19 +1,22 @@
 package pro.sky.jdbc.entity;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Data
-@Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
+@Entity(name = "employee")
 public class Employee {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -23,14 +26,28 @@ public class Employee {
     private String gender;
     @Column
     private Integer age;
-    @Column(name = "city_id")
-    private int city;
+    @ManyToOne
+    @Cascade(CascadeType.SAVE_UPDATE)
+    @JoinColumn(name = "city_id")
+    private City city;
 
-    public Employee(String firstName, String lastName, String gender, Integer age, int city) {
+    public Employee(String firstName, String lastName, String gender, Integer age, City city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
         this.city = city;
+    }
+
+    public Employee(String firstName, String lastName, String gender, Integer age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return getLastName() + " " + getFirstName() + " г." + getCity();
     }
 }

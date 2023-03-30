@@ -1,44 +1,14 @@
 package pro.sky.jdbc.dao;
 
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import pro.sky.jdbc.entity.Employee;
 
-import java.util.List;
+@Repository
+public class EmployeeDao extends AbstractDao<Employee> {
 
-public interface EmployeeDao {
-
-    /**
-     * Создает(добавляет) сущность Employee в таблицу
-     *
-     * @param employee сущность Employee
-     */
-    void create(Employee employee);
-
-    /**
-     * Ищет в таблице сущность Employee по id
-     *
-     * @param id идентификатор (первичный ключ)
-     * @return сущность Employee
-     */
-    Employee findById(Long id);
-
-    /**
-     * Извлекает список всех сущностей Employee из базы
-     *
-     * @return список всех объектов Employee
-     */
-    List<Employee> findAll();
-
-    /**
-     * Обновляет сущность Employee в базе
-     *
-     * @param employee сущность Employee
-     */
-    void update(Employee employee);
-
-    /**
-     * Удаляет сущность Employee в базе
-     *
-     * @param employee сущность Employee
-     */
-    void delete(Employee employee);
+    public EmployeeDao(SessionFactory sessionFactory) {
+        super(sessionFactory);
+        setClazz(Employee.class);
+    }
 }

@@ -1,27 +1,26 @@
 package pro.sky.jdbc.dao;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.stereotype.Component;
-import pro.sky.jdbc.entity.Employee;
 import pro.sky.jdbc.exception.DaoException;
 
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
-public class EmployeeDaoImpl implements EmployeeDao {
-
+public abstract class AbstractDao<T> implements Dao<T> {
     private final SessionFactory sessionFactory;
+    @Setter
+    private Class<T> clazz;
 
     @Override
-    public void create(Employee employee) {
+    public void create(T entity) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.save(employee);
+            session.save(entity);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -32,50 +31,51 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public Employee findById(Long id) {
+    public T findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Employee.class, id);
+            return session.get(clazz, id);
         } catch (Exception e) {
             throw new DaoException("Ошибка при поиске в базе данных: " + e.getMessage());
         }
     }
 
     @Override
-    public List<Employee> findAll() {
+    public List<T> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Employee").list();
+            String query = "FROM " + clazz.getSimpleName().toLowerCase();
+            return session.createQuery(query).list();
         } catch (Exception e) {
             throw new DaoException("Ошибка при поиске в базе данных: " + e.getMessage());
         }
     }
 
     @Override
-    public void update(Employee employee) {
+    public void delete(T entity) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.update(employee);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DaoException("Не удалось изменить сущность в базе данных: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void delete(Employee employee) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.delete(employee);
+            session.delete(entity);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             throw new DaoException("Не удалось удалить сущность из базы данных: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void update(T entity) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DaoException("Не удалось изменить сущность в базе данных: " + e.getMessage());
         }
     }
 }

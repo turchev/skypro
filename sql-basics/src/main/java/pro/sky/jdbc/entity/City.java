@@ -1,21 +1,34 @@
 package pro.sky.jdbc.entity;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
-@Data
-@Entity
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
+@Entity(name = "city")
 public class City {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "city_id")
-    private int cityId;
+    private Long cityId;
     @Column(name = "city_name", length = 60)
     private String cityName;
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    private List<Employee> employees;
+
+    public City(String cityName) {
+        this.cityName = cityName;
+    }
+
+    @Override
+    public String toString() {
+        return getCityName();
+    }
 }
