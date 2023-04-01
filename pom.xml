@@ -24,6 +24,7 @@
         <module>junit</module>
         <module>mockito</module>
         <module>sql-basics</module>
+        <module>hibernate</module>
     </modules>
 
     <properties>
