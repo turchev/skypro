@@ -5,13 +5,16 @@ import lombok.Setter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import pro.sky.hibernate.exception.DaoException;
 
 import java.util.List;
 
+import static pro.sky.hibernate.Application.APPLICATION_PREFIX;
+
 @RequiredArgsConstructor
 public abstract class AbstractDao<T> implements Dao<T> {
-    private final SessionFactory sessionFactory;
+    protected final SessionFactory sessionFactory;
     @Setter
     private Class<T> clazz;
 
@@ -42,8 +45,9 @@ public abstract class AbstractDao<T> implements Dao<T> {
     @Override
     public List<T> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            String query = "FROM " + clazz.getSimpleName().toLowerCase();
-            return session.createQuery(query).list();
+            String queryString = "FROM " + APPLICATION_PREFIX + "_" + clazz.getSimpleName().toLowerCase();
+            Query<T> query = session.createQuery(queryString, clazz);
+            return query.list();
         } catch (Exception e) {
             throw new DaoException("Ошибка при поиске в базе данных: " + e.getMessage());
         }

@@ -2,50 +2,57 @@ package pro.sky.hibernate;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pro.sky.hibernate.dao.Dao;
-import pro.sky.hibernate.entity.City;
-import pro.sky.hibernate.entity.Employee;
+import pro.sky.hibernate.dao.RoleDao;
+import pro.sky.hibernate.dao.UserDao;
+import pro.sky.hibernate.entity.Role;
+import pro.sky.hibernate.entity.User;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class Application {
-    private static final long EMPLOYEE_ID = 5L;
-    private static final long CITY_ID = 5L;
-    private final Dao<Employee> employeeDao;
-    private final Dao<City> cityDao;
+    public static final String APPLICATION_PREFIX = "app";
+
+    private static final String ADMIN_ROLE_NAME = "Администратор";
+    private static final String ADVANCED_USER_ROLE_NAME = "Опытный пользователь";
+    private static final String USER_ROLE_NAME = "Пользователь";
+    private static final long USER_ID = 1L;
+
+    private final UserDao userDao;
+    private final RoleDao roleDao;
 
     @PostConstruct
     private void init() {
 
-        // Создание(добавление) связанных сущностей в таблицы
-        Employee createdEmployee = new Employee("Владимир", "Ленин", "М", 53, new City("Магадан"));
-        employeeDao.create(createdEmployee);
+        // Создание роли
+        roleDao.create(new Role(ADMIN_ROLE_NAME));
 
-        City city = new City("Краснодар");
-        city.setEmployees(List.of(new Employee("Марк", "Твен", "М", 77), new Employee("Федор", "Достоевский", "М", 55)));
-        cityDao.create(city);
+        // Создание нового пользователя без ролей
+        userDao.create(new User("Ленин В.И.", "LeninVI", "passwdLVI"));
 
-        // Получение конкретного объекта по id
-        Employee foundEmployee = employeeDao.findById(EMPLOYEE_ID);
-        System.out.println("Пользователь: " + foundEmployee);
-        City foundCity = cityDao.findById(CITY_ID);
-        System.out.println("Город: " + foundCity);
+        // Создание нового пользователя одновременно с созданием и присвоением ему ролей
+        Set<Role> roles = Set.of(
+                new Role(ADVANCED_USER_ROLE_NAME),
+                new Role(USER_ROLE_NAME));
+        userDao.create(new User("Сталин И.В.", "StalinVI", "passwdSIV", roles));
 
-        // Изменение конкретного объекта в базе по id
-        foundEmployee.setAge(100);
-        employeeDao.update(foundEmployee);
-        foundCity.setCityName("Уфа");
-        cityDao.update(foundCity);
+        // Получение списка пользователей из БД (без ролей)
+        userDao.findAll().forEach(System.out::println);
 
-        // Получение списка всех объектов Employee из базы и вывод в консоль
-        employeeDao.findAll().forEach(System.out::println);
-        cityDao.findAll().forEach(System.out::println);
+        // Получение конкретного пользователя по id с ролями
+        User foundUser = userDao.findByIdWithRoles(USER_ID);
+        System.out.println("Пользователь: " + foundUser + " роли: " + foundUser.getRoles());
 
-        // Удаление конкретного объекта из базы
-        employeeDao.delete(foundEmployee);
-        cityDao.delete(foundCity);
+        // Получение списка ролей пользователя по имени роли
+        System.out.println(ADVANCED_USER_ROLE_NAME + ": " + roleDao.getUsersByRoleName(ADVANCED_USER_ROLE_NAME));
+
+        // Изменение пользователя
+        foundUser.setName("Хрущев Н.С.");
+        userDao.update(foundUser);
+
+        // Удаление пользователя
+        userDao.delete(foundUser);
     }
 }
